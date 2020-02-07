@@ -13,21 +13,11 @@ data class TodoItem(
     @JsonSerialize(using = ToStringSerializer::class)
     @JsonDeserialize(using = LocalDateDeserializer::class)
     val dueDate: LocalDate,
-    val importance: Int
+    val importance: Importance
 )
 
-val todo1 = TodoItem(
-    title = "Add RestAPI Data Access",
-    details = "Add database support",
-    assignedTo = "Me",
-    dueDate = LocalDate.of(2020,12,18),
-    importance = 1
-)
 
-val todo2 = TodoItem(
-    title = "Add RestAPI Service",
-    details = "Add a service to get the data",
-    assignedTo = "Me",
-    dueDate = LocalDate.of(2020,12,18),
-    importance = 1
-)
+
+enum class Importance {
+    LOW, MEDIUM, HIGH
+}

@@ -1,8 +1,8 @@
-val ktor_version: String by project
-val kotlin_version: String by project
+val kotlin_version: String  by project
 val logback_version: String by project
 val jackson_version: String by project
-
+val kluent_version: String by project
+val spek_version: String by project
 
 buildscript {
     repositories {
@@ -32,14 +32,15 @@ allprojects {
     }
 
     dependencies {
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
-        implementation("io.ktor:ktor-server-cio:$ktor_version")
+        implementation("ch.qos.logback:logback-classic:$logback_version")
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jackson_version")
         implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jackson_version")
-        implementation("ch.qos.logback:logback-classic:$logback_version")
-        implementation("io.ktor:ktor-server-core:$ktor_version")
-        implementation("io.ktor:ktor-server-host-common:$ktor_version")
-        testImplementation("io.ktor:ktor-server-tests:$ktor_version")
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
+
+        implementation("org.amshove.kluent:kuent:$kluent_version")
+        implementation("org.spekframework.spek2:spek-dsl-jvm:$spek_version")
+
+        implementation("org.spekframework.spek2:spek-runner-junit5:$spek_version")
     }
 }
 
@@ -47,6 +48,12 @@ subprojects {
     version = "1.0"
 }
 
-project(":todo-restapi") {
+project(":todolist-shared") {
 
+}
+
+project(":todolist-restapi") {
+    dependencies {
+        implementation(project(":todolist-shared"))
+    }
 }
