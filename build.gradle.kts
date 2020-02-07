@@ -49,7 +49,6 @@ subprojects {
 }
 
 project(":todolist-shared") {
-
 }
 
 project(":todolist-restapi") {
