@@ -1,16 +1,13 @@
 package application.web.routes
 
 import application.web.controllers.TodoController
-import application.web.controllers.todos
 import com.fasterxml.jackson.databind.SerializationFeature
-import domain.todo.entities.TodoItem
 import io.ktor.application.call
 import io.ktor.features.ContentNegotiation
 import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.jackson.jackson
-import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.routing.Routing
 import io.ktor.routing.accept
