@@ -1,5 +1,6 @@
 package com.flaviodev
 
+import application.module
 import io.ktor.http.*
 import kotlin.test.*
 import io.ktor.server.testing.*

@@ -1,6 +1,8 @@
-package com.flaviodev
+package application
 
 import com.fasterxml.jackson.databind.SerializationFeature
+import application.web.routes.todoApi
+import application.web.routes.todoContentVersions
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install
