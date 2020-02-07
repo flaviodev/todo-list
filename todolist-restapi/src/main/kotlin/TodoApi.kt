@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import io.ktor.application.call
 import io.ktor.features.ContentNegotiation
 import io.ktor.http.ContentType
+import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.jackson.jackson
 import io.ktor.request.receive
@@ -27,70 +28,80 @@ fun ContentNegotiation.Configuration.todoContentVersions() {
 }
 
 fun Routing.todoApi() {
-    route("/api") {
-        accept(todoContentV1) {
-            get("/todo") {
-                call.respond(todos)
+    route("/api/todo") {
+        route("/", HttpMethod.Get) {
+            accept(todoContentV1) {
+                handle {
+                    call.respond(todos)
+                }
+            }
+
+            accept(todoContentV2) {
+                handle {
+                    call.respond(todos.map { t -> t.copy(importance = Importance.HIGH) })
+                }
             }
         }
 
-        accept(todoContentV2) {
-            get("/todo") {
-                call.respond(todos.map { t -> t.copy(importance = Importance.HIGH) })
+        route("{id}", HttpMethod.Get) {
+            accept(todoContentV1) {
+                handle {
+                    val id = call.parameters["id"]
+
+                    call.respond(todos.firstOrNull { it.id == id?.toIntOrNull() } ?: HttpStatusCode.NotFound)
+                }
             }
         }
 
-        accept(todoContentV1) {
-            get("/todo/{id}") {
-                val id = call.parameters["id"]
-
-                call.respond(todos.firstOrNull { it.id == id?.toIntOrNull() } ?: HttpStatusCode.NotFound)
-            }
-        }
-
-        accept(todoContentV1) {
-            post("/todo") {
-                val todo = call.receive<TodoItem>()
-
-                val newTodo = todo.copy(id = todos.last().id!! + 1)
-
-                todos.add(newTodo)
-
-                call.respond(HttpStatusCode.Created, newTodo)
-            }
-        }
-
-        accept(todoContentV1) {
-            put("/todo/{id}") {
-                val id = call.parameters["id"]?.toIntOrNull()
-
-                if (id == null)
-                    call.respond(HttpStatusCode.BadRequest).also { return@put }
-
-                todos.firstOrNull { it.id == id }?.apply {
+        route("/", HttpMethod.Post) {
+            accept(todoContentV1) {
+                handle {
                     val todo = call.receive<TodoItem>()
-                    val newTodo = todo.copy(id = id)
 
-                    todos.add(todos.indexOf(this), newTodo)
-                    todos.remove(this)
+                    val newTodo = todo.copy(id = todos.last().id!! + 1)
 
-                    call.respond(HttpStatusCode.NoContent)
-                } ?: call.respond(HttpStatusCode.NotFound)
+                    todos.add(newTodo)
+
+                    call.respond(HttpStatusCode.Created, newTodo)
+                }
             }
         }
 
-        accept(todoContentV1) {
-            delete("/todo/{id}") {
-                val id = call.parameters["id"]?.toIntOrNull()
+        route("{id}", HttpMethod.Put) {
+            accept(todoContentV1) {
+                handle {
+                    val id = call.parameters["id"]?.toIntOrNull()
 
-                if (id == null)
-                    call.respond(HttpStatusCode.BadRequest).also { return@delete }
+                    if (id == null)
+                        call.respond(HttpStatusCode.BadRequest).also { return@handle }
 
-                todos.firstOrNull { it.id == id }?.apply {
-                    todos.remove(this)
+                    todos.firstOrNull { it.id == id }?.apply {
+                        val todo = call.receive<TodoItem>()
+                        val newTodo = todo.copy(id = id)
 
-                    call.respond(HttpStatusCode.NoContent)
-                } ?: call.respond(HttpStatusCode.NotFound)
+                        todos.add(todos.indexOf(this), newTodo)
+                        todos.remove(this)
+
+                        call.respond(HttpStatusCode.NoContent)
+                    } ?: call.respond(HttpStatusCode.NotFound)
+                }
+            }
+        }
+
+        route("{id}", HttpMethod.Delete) {
+            accept(todoContentV1) {
+                handle {
+                    val id = call.parameters["id"]?.toIntOrNull()
+
+                    if (id == null)
+                        call.respond(HttpStatusCode.BadRequest).also { return@handle }
+
+                    todos.firstOrNull { it.id == id }?.apply {
+                        todos.remove(this)
+
+                        call.respond(HttpStatusCode.NoContent)
+                    } ?: call.respond(HttpStatusCode.NotFound)
+                }
             }
         }
     }
