@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install
+import io.ktor.application.log
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.StatusPages
 import io.ktor.http.ContentType
@@ -17,6 +18,7 @@ fun main(args: Array<String>): Unit = io.ktor.server.cio.EngineMain.main(args)
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
     install(Routing) {
+        trace { application.log.trace(it.buildText()) }
         todoApi()
     }
 
@@ -28,9 +30,10 @@ fun Application.module(testing: Boolean = false) {
     }
 
     install(ContentNegotiation) {
+        todoContentVersions()
+
         jackson {
             enable(SerializationFeature.INDENT_OUTPUT)
         }
     }
 }
-
