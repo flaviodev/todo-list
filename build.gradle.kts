@@ -37,7 +37,7 @@ allprojects {
         implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jackson_version")
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
 
-        implementation("org.amshove.kluent:kuent:$kluent_version")
+        implementation("org.amshove.kluent:kluent:$kluent_version")
         implementation("org.spekframework.spek2:spek-dsl-jvm:$spek_version")
 
         implementation("org.spekframework.spek2:spek-runner-junit5:$spek_version")
