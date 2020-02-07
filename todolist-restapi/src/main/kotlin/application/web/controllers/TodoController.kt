@@ -9,7 +9,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
 
 class TodoController {
-    val service = TodoService()
+    private val service = TodoService()
 
     fun getAll(): List<TodoItemResponse> {
         return service.getAll().map { TodoItemResponse(it) }
