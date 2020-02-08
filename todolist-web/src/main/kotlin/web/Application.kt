@@ -1,5 +1,6 @@
 package web
 
+import com.github.mustachejava.DefaultMustacheFactory
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install
@@ -7,6 +8,7 @@ import io.ktor.application.log
 import io.ktor.features.StatusPages
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
+import io.ktor.mustache.Mustache
 import io.ktor.response.respondText
 import io.ktor.routing.Routing
 import io.ktor.server.engine.commandLineEnvironment
@@ -45,14 +47,20 @@ fun Application.module() {
         }
     }
 
+    install(Mustache) {
+        mustacheFactory = DefaultMustacheFactory("templates")
+    }
+
     install(Routing) {
         if(isDev) trace {
             application.log.trace(it.buildText())
         }
+
+        staticResources()
     }
 }
 
-val Application.envKind get() = environment.config.property("ktor.enviroment").getString()
+val Application.envKind get() = environment.config.property("ktor.environment").getString()
 val Application.isDev get() = envKind == "dev"
 val Application.isTest get() = envKind == "test"
 val Application.isProd get() = envKind != "dev" && envKind != "test"
