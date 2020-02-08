@@ -1,11 +1,11 @@
 package resources.repositories
 
 import domain.todo.TodoRepository
-import domain.todo.entities.Importance
 import domain.todo.entities.TodoItem
+import domain.todo.types.Importance
 import java.time.LocalDate
 
-class TodoRepositoryInMemory: TodoRepository {
+class TodoRepositoryInMemory : TodoRepository {
 
     override fun getAll(): List<TodoItem> {
         return todos

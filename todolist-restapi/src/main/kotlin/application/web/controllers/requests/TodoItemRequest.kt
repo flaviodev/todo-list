@@ -1,11 +1,9 @@
-package application.web.requests
+package application.web.controllers.requests
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer
-import domain.todo.entities.Importance
 import domain.todo.entities.TodoItem
+import domain.todo.types.Importance
 import java.time.LocalDate
 
 data class TodoItemRequest(

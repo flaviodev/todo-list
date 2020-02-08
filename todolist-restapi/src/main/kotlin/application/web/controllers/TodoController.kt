@@ -1,9 +1,9 @@
 package application.web.controllers
 
-import application.web.requests.TodoItemRequest
-import application.web.responses.TodoItemResponse
+import application.web.controllers.requests.TodoItemRequest
+import application.web.controllers.responses.TodoItemResponse
 import domain.todo.TodoService
-import domain.todo.entities.Importance
+import domain.todo.types.Importance
 import io.ktor.application.ApplicationCall
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive

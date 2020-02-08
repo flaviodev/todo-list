@@ -1,9 +1,9 @@
-package application.web.responses
+package application.web.controllers.responses
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
-import domain.todo.entities.Importance
 import domain.todo.entities.TodoItem
+import domain.todo.types.Importance
 import java.time.LocalDate
 
 data class TodoItemResponse(

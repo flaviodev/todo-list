@@ -21,6 +21,7 @@ plugins {
 
 allprojects {
     group = "com.flaviodev"
+    
     version = "0.0.1"
 
     apply(plugin = "org.jetbrains.kotlin.jvm")
@@ -37,10 +38,16 @@ allprojects {
         implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jackson_version")
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
 
-        implementation("org.amshove.kluent:kluent:$kluent_version")
-        implementation("org.spekframework.spek2:spek-dsl-jvm:$spek_version")
+        testImplementation("org.amshove.kluent:kluent:$kluent_version")
+        testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spek_version")
 
-        implementation("org.spekframework.spek2:spek-runner-junit5:$spek_version")
+        testRuntime("org.spekframework.spek2:spek-runner-junit5:$spek_version")
+    }
+    
+    tasks.withType<Test> {
+        useJUnitPlatform { 
+            includeEngines("spek2")
+        }
     }
 }
 
