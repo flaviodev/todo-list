@@ -56,9 +56,16 @@ subprojects {
 }
 
 project(":todolist-shared") {
+    
 }
 
 project(":todolist-restapi") {
+    dependencies {
+        implementation(project(":todolist-shared"))
+    }
+}
+
+project(":todolist-web") {
     dependencies {
         implementation(project(":todolist-shared"))
     }
