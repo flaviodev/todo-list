@@ -1,7 +1,5 @@
 @file:Suppress("PackageDirectoryMismatch")
 
-package com.rocksolidknowledge.todolist.web
-
 import com.github.mustachejava.DefaultMustacheFactory
 import io.ktor.application.Application
 import io.ktor.application.call
@@ -16,17 +14,13 @@ import io.ktor.routing.Routing
 import io.ktor.server.engine.commandLineEnvironment
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
-import io.ktor.sessions.SessionStorageMemory
-import io.ktor.sessions.Sessions
-import io.ktor.sessions.cookie
-
+import web.staticResources
+import web.todos
 
 fun main(args: Array<String>) {
     embeddedServer(Netty, commandLineEnvironment(args)).start()
 }
 
-
-@Suppress("unused") // Referenced in application.conf
 fun Application.module() {
 
     install(StatusPages) {
@@ -57,7 +51,6 @@ fun Application.module() {
     install(Mustache) {
         mustacheFactory = DefaultMustacheFactory("templates")
     }
-
 
     install(Routing) {
         if (isDev) trace {

@@ -1,3 +1,3 @@
-package com.rocksolidknowledge.todolist.shared
+package shared
 
 data class User(val name: String)

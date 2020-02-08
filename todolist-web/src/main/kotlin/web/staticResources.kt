@@ -1,4 +1,4 @@
-package com.rocksolidknowledge.todolist.web
+package web
 
 import io.ktor.http.content.default
 import io.ktor.http.content.files
